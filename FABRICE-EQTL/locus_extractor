@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+require 'csv'
+
+TARGET_COLUMNS = [3, 7]
+
+nlrs = []
+prospective_tfs = []
+
+CSV.foreach(ARGV[0], headers: false, col_sep: "\t") do |row|
+  nlr, prospective_tf = TARGET_COLUMNS.map { |col| row[col] }
+  nlrs << nlr.split(';').first.split('=').last
+  prospective_tfs << prospective_tf.split(';').first.split('=').last
+end
+
+File.open("nlrs.txt", "w") do |file|
+  nlrs.each { |nlr| file.puts nlr }
+end
+
+File.open("prospective_tfs.txt", "w") do |file|
+  prospective_tfs.each { |tf| file.puts tf }
+end
