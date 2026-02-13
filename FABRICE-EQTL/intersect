@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+bedtools intersect -a file_list.bed -b TAIR10_genes.bed -wa -wb > qtl.bed

@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+require 'csv'
+
+TARGET_COLUMNS = [0, 3, 4, 6, 7, 9]
+
+File.open("file_list.bed", "w") do |file|
+  CSV.foreach(ARGV[0], headers: false, col_sep: "_").with_index do |row, idx|
+    next if idx.zero? # Drop metadata line at top of file
+
+    locus, chr, position, snp, majmin, phenotype = TARGET_COLUMNS.map { |col| row[col] }
+    file.puts ["Chr#{chr}", position.to_i - 1, position.to_i, ["ID=#{locus}", "Note=#{snp}_#{majmin}_#{phenotype}", "Name=#{locus}"].join(";")].join("\t")
+  end
+end
